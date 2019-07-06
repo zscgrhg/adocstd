@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example.adoc</groupId>
+    <artifactId>adocstd</artifactId>
+    <version>1.0-SNAPSHOT</version>
+
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.asciidoctor</groupId>
+            <artifactId>asciidoctor-maven-plugin</artifactId>
+            <version>1.6.0</version>
+            <executions>
+                <execution>
+                    <id>output-html</id>
+                    <phase>generate-resources</phase>
+                    <goals>
+                        <goal>process-asciidoc</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <outputDirectory>target/docs/asciidoc</outputDirectory>
+                <backend>pdf</backend>
+                <sourceHighlighter>coderay</sourceHighlighter>
+                <attributes>
+                    <toc>left</toc>
+                    <toclevels>3</toclevels>
+                    <numbered></numbered>
+                    <hardbreaks></hardbreaks>
+                    <sectlinks></sectlinks>
+                    <sectanchors></sectanchors>
+                    <pdf-fontsdir>fonts</pdf-fontsdir>
+                    <pdf-stylesdir>themes</pdf-stylesdir>
+                    <pdf-style>cn</pdf-style>
+                </attributes>
+            </configuration>
+            <dependencies>
+                <dependency>
+                    <groupId>org.asciidoctor</groupId>
+                    <artifactId>asciidoctorj-pdf</artifactId>
+                    <version>1.5.0-alpha.18</version>
+                </dependency>
+            </dependencies>
+        </plugin>
+    </plugins>
+</build>
+</project>

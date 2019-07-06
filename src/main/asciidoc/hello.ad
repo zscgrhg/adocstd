@@ -1,0 +1,78 @@
+= 天下风云出我辈: 一入江湖岁月催
+Jennifer Nerlich <jn@vogella.com>
+v1.1,  : First draft
+:source-highlighter: prettify
+:pygments-style: xcode
+
+
+
+:leveloffset: 2
+== title1
+
+[source,java]
+----
+include::C:\github\seata-samples-master\adocstd\src\main\java\example\HelloWorld.java[tags=tagname]
+----
+
+Docker allows to package the full stack in a container:
+
+* OS
+** Windows
+** Ubuntu
+* JVM,
+* App server
+* Application with its configuration
+
+* Listing1
+* Listing2
++
+[source,java]
+----
+include::C:\github\seata-samples-master\adocstd\src\main\java\example\HelloWorld.java[tags=tagname]
+----
+
+menu:View[Zoom > Reset]
+
+Press the btn:[OK] button when you are finished.
+
+kbd:[Alt+F11] - Toggle Full Screen Mode in the Eclipse IDE
+
+
+.This is the optional title of the table
+|===
+|Name of Column 1 |Name of Column 2
+
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|===
+
+
+.Title
+[cols="1,3",options="header"]
+|===
+|Name of Column 1 |Name of Column 2 |Name of Column 3
+
+|Cell in column 1, row 1
+|Cell in column 2, row 1
+|Cell in column 3, row 1
+
+|Cell in column 1, row 2
+|Cell in column 2, row 2
+|Cell in column 3, row 2
+|===
+
+[quote, Ben Parker, Spiderman Movie]
+____
+With great power comes great responsibility.
+____
+
+
+CPU:: The brain of the computer.
+Hard drive:: Permanent storage for operating system and/or user files.
+RAM:: Temporarily stores information the CPU uses during operation.
+Keyboard:: Used to enter text or control items on the screen.
+Mouse:: Used to point to and select items on your computer screen.
+Monitor:: Displays information in visual form using text and graphics.

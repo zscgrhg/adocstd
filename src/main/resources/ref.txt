@@ -1,0 +1,13 @@
+https://www.vogella.com/tutorials/AsciiDoc/article.html#introduction-into-asciidoc
+
+https://asciidoctor.org/docs/asciidoc-syntax-quick-reference/
+
+https://www.vogella.com/tutorials/AsciiDoc/article.html#source-code
+
+
+http://houqp.github.io/wbwa/wbwa.html
+
+https://github.com/chloerei/asciidoctor-pdf-cjk-kai_gen_gothic/releases
+
+https://asciidoctor.org/docs/asciidoc-writers-guide/#what-else-can-asciidoc-do
+

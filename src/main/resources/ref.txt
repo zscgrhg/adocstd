@@ -11,3 +11,4 @@ https://github.com/chloerei/asciidoctor-pdf-cjk-kai_gen_gothic/releases
 
 https://asciidoctor.org/docs/asciidoc-writers-guide/#what-else-can-asciidoc-do
 
+https://www.infoq.cn/article/0Rhm8RXKeupORf*CyGhK?utm_source=related_read&utm_medium=article

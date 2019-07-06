@@ -19,7 +19,7 @@ page:
   #margin: [0.5 * 72, 0.67 * 72, 0.67 * 72, 0.67 * 72]
   margin: [0.5in, 0.67in, 0.67in, 0.67in]
   # size can be a named size (e.g., A4) or custom dimensions (e.g., [8.25in, 11.69in])
-  size: A3
+  size: A4
 base:
   # color as hex string (leading # is optional)
   font_color: 333333
@@ -63,6 +63,8 @@ literal:
   font_color: b12146
   font_family: Roboto Mono
 heading:
+  #h1_align: center
+  #h2_align: center
   #font_color: 181818
   font_color: $base_font_color
   font_family: $base_font_family

@@ -32,7 +32,7 @@ https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/71106939/Synopsys+Detec
 == 准备工作
 . 获取api token
 +
-本文不介绍黑鸭( *Black Duck™* )的离线模式,因此必须存在可用的黑鸭服务器并且创建好账号和授予相应的权限
+本文不介绍黑鸭( *Black Duck™* )的离线模式,因此必须连接到黑鸭服务器并且预先创建好账号和授予相应的权限
 https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/109477972/How+to+Generate+an+API+Token+in+Black+Duck[Generate an API Token]
 +
 [NOTE]

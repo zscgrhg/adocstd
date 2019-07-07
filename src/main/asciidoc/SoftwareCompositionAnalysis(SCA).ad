@@ -4,6 +4,7 @@
 :revdate: 2019/07/07
 :revnumber: v0.1
 :doctype: article
+:toc-title: 目录
 
 <<<
 == 人工识别软件构成的问题
@@ -56,7 +57,7 @@ https://repo.blackducksoftware.com/artifactory/webapp/#/artifacts/browse/tree/Ge
 [NOTE]
 ====
     . 你的工程所在目录的路径长度不能超过255个字符
-    . 执行脚本的工作目录不要放在工程目录下
+    . 工作目录 *hubdetect* 不要放在工程目录下
 ====
 
 . 在 *hubdetect* 目录下创建detect.bat
@@ -88,7 +89,7 @@ java -jar synopsys-detect-5.5.1.jar
 <2> *BOM* 缓存目录
 <3> 黑鸭项目名称,不需要预先创建项目,但必须有项目创建权限
 <4> 黑鸭项目版本名称,不需要预先创建,但必须有项目创建权限
-<5> 包管理工具识别文件(pom.xml,package.json,build.gradle等等)遍历搜索深度
+<5> 遍历搜索包管理工具识别文件(pom.xml,package.json,build.gradle等等)的最大深度
 <6> 项目源码根目录
 <7> 项目源码根目录和依赖包目录,多个目录用逗号分隔
 

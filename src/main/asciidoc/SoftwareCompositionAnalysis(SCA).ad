@@ -6,8 +6,10 @@
 :doctype: article
 :toc-title: 目录
 
+
+
 <<<
-== 人工识别软件构成的问题
+== 人工分析软件构成的痛点
 . 工作量大
 . 数据不完整：容易忽略传递依赖
 . 人工统计的数据格式无法用于自动化风险评估
@@ -18,7 +20,7 @@
 == Synopsys Detect简介
 Synopsys Detect(前身是Hub Detect) , 包括：
 - *Black Duck™*: Software Composition Analysis (SCA: open source software detection)  软件构成分析
-- *Coverity™ on Polaris™*: Static Application Security Testing (SAST: code analysis)  静态代码扫描
+- *Coverity™ on Polaris™*: Static Application Security Testing (SAST: code analysis)  源代码扫描
 
 ==  怎么使用Synopsys Detect完成SCA
 . CI集成
@@ -33,7 +35,7 @@ https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/71106939/Synopsys+Detec
 == 准备工作
 . 获取api token
 +
-本文不介绍黑鸭( *Black Duck™* )的离线模式,因此必须连接到黑鸭服务器并且预先创建好账号和授予相应的权限
+本文不介绍黑鸭( *Black Duck™* )的离线模式,因此必须能够连接到黑鸭服务器并且预先创建好账号和授予相应的权限
 https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/109477972/How+to+Generate+an+API+Token+in+Black+Duck[Generate an API Token]
 +
 [NOTE]
@@ -56,7 +58,7 @@ https://repo.blackducksoftware.com/artifactory/webapp/#/artifacts/browse/tree/Ge
 +
 [NOTE]
 ====
-    . 你的工程所在目录的路径长度不能超过255个字符
+    . 工程目录的路径长度不能超过255个字符
     . 工作目录 *hubdetect* 不要放在工程目录下
 ====
 
@@ -232,3 +234,11 @@ Detect Version: 5.5.1
 . https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/75300891/Synopsys+Detect+Scanning+Best+Practices[Synopsys Detect Scanning Best Practices]
 . https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/622673/Synopsys+Detect+Properties[Synopsys Detect Properties]
 . https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/113344516/Synopsys+Detect+Supported+Package+Managers+and+Languages[Synopsys Detect Supported Package Managers and Languages]
+
+
+[colophon]
+== 版本信息
+版本 v0.1
+创建日期 2019/07/07
+作者 李文魁10227109
+邮箱 li.wenkui@zte.com.cn

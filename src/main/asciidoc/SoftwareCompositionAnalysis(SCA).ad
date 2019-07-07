@@ -1,0 +1,233 @@
+= Software Composition Analysis(SCA)
+:author: 李文魁
+:email: li.wenkui@zte.com.cn
+:revdate: 2019/07/07
+:revnumber: v0.1
+:doctype: article
+
+<<<
+== 手工识别软件构成的问题
+. 工作量大
+. 数据不完整：容易忽略传递依赖
+. 手工统计的数据格式无法用于自动化风险评估
+
+为了有效解决上述问题,本文档将介绍如何使用 *Synopsys Detect* 完成自动化软件构成分析(*SCA*)
+
+
+== Synopsys Detect简介
+Synopsys Detect(前身是Hub Detect) , 包括：
+- *Black Duck™*: Software Composition Analysis (SCA: open source software detection)  软件构成分析
+- *Coverity™ on Polaris™*: Static Application Security Testing (SAST: code analysis)  静态代码扫描
+
+==  怎么使用Synopsys Detect完成SCA
+. CI集成
++
+Synopsys Detect提供jenkins插件:
+https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/71106939/Synopsys+Detect+for+Jenkins[Synopsys Detect for Jenkins]
+
+. 直接调用detect.jar
++
+本文采用直接调detect.jar的方式完成 *SCA* 并自动上传 *BOM* 到黑鸭( *Black Duck™* )服务器
+
+== 准备工作
+. 获取api token
++
+本文不介绍黑鸭( *Black Duck™* )的离线模式,因此必须存在可用的黑鸭服务器并且创建好账号和授予相应的权限
+https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/109477972/How+to+Generate+an+API+Token+in+Black+Duck[Generate an API Token]
++
+[NOTE]
+=====================================================================
+权限要求
+
+. roles for global code scanner or project code scanner  permissions
+. project creator role (global) to create a new project/version if it does not already exist
+=====================================================================
+
+
+. 下载detect.jar
++
+官方下载地址：
+https://repo.blackducksoftware.com/artifactory/webapp/#/artifacts/browse/tree/General/bds-integrations-release/com/synopsys/integration/synopsys-detect/5.5.1/synopsys-detect-5.5.1.jar[synopsys-detect-5.5.1.jar]
+
+<<<
+== 完整步骤
+. 在工程目录之外创建一个干净的工作目录 *hubdetect* ,把synopsys-detect-5.5.1.jar拷贝到 *hubdetect* 目录
++
+[NOTE]
+====
+    . 你的工程所在目录的路径长度不能超过255个字符
+    . 执行脚本的工作目录不要放在工程目录下
+====
+
+. 在 *hubdetect* 目录下创建detect.bat
++
+[source,bat]
+----
+
+set detect.output.path=./blackduck  <1>
+set detect.bdio.output.path=./bdio  <2>
+set detect.notices.report=true
+set detect.risk.report.pdf=true
+set detect.risk.report.pdf.path=./report
+set detect.blackduck.signature.scanner.snippet.mode=true
+set detect.cleanup=false
+set blackduck.url=https://BLACKDUCK.URL
+set blackduck.api.token=APITOKEN
+set blackduck.trust.cert=true
+set detect.detector.search.continue=true
+set detect.api.timeout=900000
+set detect.project.name=PRM100    <3>
+set ddetect.project.version.name=V1.9.5  <4>
+set detect.detector.search.depth=2  <5>
+set detect.source.path={project.baseDir}  <6>
+set detect.blackduck.signature.scanner.paths={project.baseDir}  <7>
+
+java -jar synopsys-detect-5.5.1.jar
+----
+<1> 设置黑鸭客户端缓存目录,因为缓存到当前目录下,所以工作目录必须位于工程目录之外，否则SCA会扫描到黑鸦客户端
+<2> *BOM* 缓存目录
+<3> 黑鸭项目名称,不需要预先创建项目,但必须有项目创建权限
+<4> 黑鸭项目版本名称,不需要预先创建,但必须有项目创建权限
+<5> 包管理工具识别文件(pom.xml,package.json,build.gradle等等)遍历搜索深度
+<6> 项目源码根目录
+<7> 项目源码根目录和依赖包目录,多个目录用逗号分隔
+
+. 在 *hubdetect* 目录下打开命令行窗口, 运行detect.bat
++
+[source,console]
+----
+Microsoft Windows [版本 10.0.17763.557]
+(c) 2018 Microsoft Corporation。保留所有权利。
+
+C:\Users\lwk>cd C:\Users\lwk\Desktop\hubdetect
+
+C:\Users\lwk\Desktop\hubdetect>detect.bat
+______     _            _
+|  _  \   | |          | |
+| | | |___| |_ ___  ___| |_
+| | | / _ \ __/ _ \/ __| __|
+| |/ /  __/ ||  __/ (__| |_
+|___/ \___|\__\___|\___|\__|            <1>
+
+2019-07-07 20:06:59 INFO  [main] --- Refreshing org.springframework.context.annotation.AnnotationConfigApplicationContext@270421f5: startup date [Sun Jul 07 20:06:59 CST 2019]; root of context hierarchy
+2019-07-07 20:06:59 INFO  [main] --- Preparing Detect.
+2019-07-07 20:06:59 INFO  [main] --- Detect boot begin.
+2019-07-07 20:06:59 INFO  [main] --- You seem to be running in a WINDOWS operating system.
+
+Detect Version: 5.5.1
+
+2019-07-07 20:07:00 INFO  [main] --- Configuration processed completely.
+2019-07-07 20:07:00 INFO  [main] ---
+2019-07-07 20:07:00 INFO  [main] --- Current property values:
+2019-07-07 20:07:00 INFO  [main] --- --property = value [notes]
+2019-07-07 20:07:00 INFO  [main] --- ------------------------------------------------------------
+2019-07-07 20:07:00 INFO  [main] --- blackduck.hub.offline.mode = false
+2019-07-07 20:07:00 INFO  [main] --- blackduck.hub.timeout = 120
+2019-07-07 20:07:00 INFO  [main] --- blackduck.hub.trust.cert = false
+2019-07-07 20:07:00 INFO  [main] --- blackduck.offline.mode = false
+2019-07-07 20:07:00 INFO  [main] --- blackduck.timeout = 120
+2019-07-07 20:07:00 INFO  [main] --- blackduck.trust.cert = false
+2019-07-07 20:07:00 INFO  [main] --- detect.api.timeout = 300000
+2019-07-07 20:07:00 INFO  [main] --- detect.bitbake.build.env.name = oe-init-build-env
+2019-07-07 20:07:00 INFO  [main] --- detect.bitbake.reference.impl = -poky-linux
+2019-07-07 20:07:00 INFO  [main] --- detect.blackduck.signature.scanner.disabled = false
+2019-07-07 20:07:00 INFO  [main] --- detect.blackduck.signature.scanner.dry.run = false
+2019-07-07 20:07:00 INFO  [main] --- detect.blackduck.signature.scanner.exclusion.name.patterns = node_modules
+2019-07-07 20:07:00 INFO  [main] --- detect.blackduck.signature.scanner.exclusion.pattern.search.depth = 4
+2019-07-07 20:07:00 INFO  [main] --- detect.blackduck.signature.scanner.memory = 4096
+2019-07-07 20:07:00 INFO  [main] --- detect.blackduck.signature.scanner.parallel.processors = 1
+2019-07-07 20:07:00 INFO  [main] --- detect.blackduck.signature.scanner.snippet.matching = NONE
+2019-07-07 20:07:00 INFO  [main] --- detect.blackduck.signature.scanner.snippet.mode = false
+2019-07-07 20:07:00 INFO  [main] --- detect.blackduck.signature.scanner.upload.source.mode = false
+2019-07-07 20:07:00 INFO  [main] --- detect.bom.tool.search.continue = false
+2019-07-07 20:07:00 INFO  [main] --- detect.bom.tool.search.depth = 0
+2019-07-07 20:07:00 INFO  [main] --- detect.bom.tool.search.exclusion = bin,build,.git,.gradle,node_modules,out,packages,target [copied]
+2019-07-07 20:07:00 INFO  [main] --- detect.bom.tool.search.exclusion.defaults = true
+2019-07-07 20:07:00 INFO  [main] --- detect.cleanup = true
+2019-07-07 20:07:00 INFO  [main] --- detect.default.project.version.scheme = text
+2019-07-07 20:07:00 INFO  [main] --- detect.default.project.version.text = Default Detect Version
+2019-07-07 20:07:00 INFO  [main] --- detect.default.project.version.timeformat = yyyy-MM-dd\'T\'HH:mm:ss.SSS
+2019-07-07 20:07:00 INFO  [main] --- detect.detector.buildless = false
+2019-07-07 20:07:00 INFO  [main] --- detect.detector.search.continue = false
+2019-07-07 20:07:00 INFO  [main] --- detect.detector.search.depth = 0
+2019-07-07 20:07:00 INFO  [main] --- detect.detector.search.exclusion = bin,build,.git,.gradle,node_modules,out,packages,target [calculated]
+2019-07-07 20:07:00 INFO  [main] --- detect.detector.search.exclusion.defaults = true
+2019-07-07 20:07:00 INFO  [main] --- detect.disable.without.blackduck = false
+2019-07-07 20:07:00 INFO  [main] --- detect.docker.path.required = false
+2019-07-07 20:07:00 INFO  [main] --- detect.force.success = false
+2019-07-07 20:07:00 INFO  [main] --- detect.go.run.dep.init = false
+2019-07-07 20:07:00 INFO  [main] --- detect.hub.signature.scanner.disabled = false
+2019-07-07 20:07:00 INFO  [main] --- detect.hub.signature.scanner.dry.run = false
+2019-07-07 20:07:00 INFO  [main] --- detect.hub.signature.scanner.exclusion.name.patterns = node_modules
+2019-07-07 20:07:00 INFO  [main] --- detect.hub.signature.scanner.memory = 4096
+2019-07-07 20:07:00 INFO  [main] --- detect.hub.signature.scanner.parallel.processors = 1
+2019-07-07 20:07:00 INFO  [main] --- detect.hub.signature.scanner.snippet.mode = false
+2019-07-07 20:07:00 INFO  [main] --- detect.ignore.connection.failures = false
+2019-07-07 20:07:00 INFO  [main] --- detect.notices.report = false
+2019-07-07 20:07:00 INFO  [main] --- detect.notices.report.path = .
+2019-07-07 20:07:00 INFO  [main] --- detect.npm.include.dev.dependencies = true
+2019-07-07 20:07:00 INFO  [main] --- detect.nuget.ignore.failure = false
+2019-07-07 20:07:00 INFO  [main] --- detect.nuget.inspector.name = IntegrationNugetInspector
+2019-07-07 20:07:00 INFO  [main] --- detect.nuget.packages.repo.url = https://api.nuget.org/v3/index.json
+2019-07-07 20:07:00 INFO  [main] --- detect.packagist.include.dev.dependencies = true
+2019-07-07 20:07:00 INFO  [main] --- detect.pear.only.required.deps = false
+2019-07-07 20:07:00 INFO  [main] --- detect.polaris.enabled = false
+2019-07-07 20:07:00 INFO  [main] --- detect.project.clone.categories = COMPONENT_DATA,VULN_DATA
+2019-07-07 20:07:00 INFO  [main] --- detect.project.codelocation.unmap = false
+2019-07-07 20:07:00 INFO  [main] --- detect.project.level.adjustments = true
+2019-07-07 20:07:00 INFO  [main] --- detect.project.tool = DOCKER,DETECTOR,BAZEL
+2019-07-07 20:07:00 INFO  [main] --- detect.project.version.distribution = External
+2019-07-07 20:07:00 INFO  [main] --- detect.project.version.phase = Development
+2019-07-07 20:07:00 INFO  [main] --- detect.project.version.update = false
+2019-07-07 20:07:00 INFO  [main] --- detect.python.python3 = false
+2019-07-07 20:07:00 INFO  [main] --- detect.report.timeout = 300
+2019-07-07 20:07:00 INFO  [main] --- detect.resolve.tilde.in.paths = true
+2019-07-07 20:07:00 INFO  [main] --- detect.risk.report.pdf = false
+2019-07-07 20:07:00 INFO  [main] --- detect.risk.report.pdf.path = .
+2019-07-07 20:07:00 INFO  [main] --- detect.ruby.include.dev.dependencies = false
+2019-07-07 20:07:00 INFO  [main] --- detect.ruby.include.runtime.dependencies = true
+2019-07-07 20:07:00 INFO  [main] --- detect.sbt.report.search.depth = 3
+2019-07-07 20:07:00 INFO  [main] --- detect.search.depth = 3
+2019-07-07 20:07:00 INFO  [main] --- detect.suppress.configuration.output = false
+2019-07-07 20:07:00 INFO  [main] --- detect.suppress.results.output = false
+2019-07-07 20:07:00 INFO  [main] --- detect.test.connection = false
+2019-07-07 20:07:00 INFO  [main] --- detect.wait.for.results = false
+2019-07-07 20:07:00 INFO  [main] --- detect.yarn.prod.only = false
+2019-07-07 20:07:00 INFO  [main] --- logging.level.com.blackducksoftware.integration = INFO
+2019-07-07 20:07:00 INFO  [main] --- logging.level.com.synopsys.integration = INFO
+2019-07-07 20:07:00 INFO  [main] --- ------------------------------------------------------------
+2019-07-07 20:07:00 INFO  [main] ---
+2019-07-07 20:07:00 INFO  [main] --- Initializing Detect.
+2019-07-07 20:07:00 INFO  [main] --- Source directory: C:\Users\lwk\Desktop\hubdetect
+2019-07-07 20:07:00 INFO  [main] --- Output directory: C:\Users\lwk\blackduck
+2019-07-07 20:07:00 INFO  [main] --- Run directory: C:\Users\lwk\blackduck\runs\2019-07-07-12-06-59-398
+2019-07-07 20:07:00 INFO  [main] --- Main boot completed. Deciding what Detect should do.
+2019-07-07 20:07:00 INFO  [main] --- Black Duck will NOT run: The Black Duck url must be provided or offline mode must be set to true.
+2019-07-07 20:07:00 INFO  [main] --- Polaris will NOT run: The Polaris url must be provided.
+2019-07-07 20:07:00 INFO  [main] --- Decided what products will be run. Starting product boot.
+2019-07-07 20:07:00 ERROR [main] --- Detect boot failed.
+2019-07-07 20:07:00 ERROR [main] --- Your environment was not sufficiently configured to run Black Duck or Polaris. Please configure your environment for at least one product.
+2019-07-07 20:07:00 INFO  [main] --- All Detect actions completed.
+2019-07-07 20:07:00 INFO  [main] --- There were no detector issues to be summarized - detectors did not run or no detectors were evaluated.
+2019-07-07 20:07:00 INFO  [main] ---
+2019-07-07 20:07:00 INFO  [main] ---
+2019-07-07 20:07:00 INFO  [main] --- ======== Detect Status ========
+2019-07-07 20:07:00 INFO  [main] ---
+2019-07-07 20:07:00 INFO  [main] --- Overall Status: FAILURE_CONFIGURATION
+----
+<1> 这是一个spring boot banner
+
+. 查看结果
++
+登录黑鸭服务器查看SCA的结果.
+
+<<<
+
+
+[bibliography]
+== 参考文献目录
+. https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/62423113/Synopsys+Detect[Synopsys Detect官方文档]
+. https://jenkins.io/doc/pipeline/steps/blackduck-detect/[blackduck-detect]
+. https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/75300891/Synopsys+Detect+Scanning+Best+Practices[Synopsys Detect Scanning Best Practices]
+. https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/622673/Synopsys+Detect+Properties[Synopsys Detect Properties]
+. https://synopsys.atlassian.net/wiki/spaces/INTDOCS/pages/113344516/Synopsys+Detect+Supported+Package+Managers+and+Languages[Synopsys Detect Supported Package Managers and Languages]
